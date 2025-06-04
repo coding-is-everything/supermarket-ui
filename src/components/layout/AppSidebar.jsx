@@ -1,22 +1,17 @@
 // Suggested Folder Path: src/components/layout/AppSidebar.jsx
 
 import React from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Drawer,
   Toolbar,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Typography,
   Divider,
+  useTheme,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 
-// Example Icons
+// Icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -24,76 +19,77 @@ import PeopleIcon from '@mui/icons-material/People';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SettingsIcon from '@mui/icons-material/Settings';
 import StoreIcon from '@mui/icons-material/Store';
+import CategoryIcon from '@mui/icons-material/Category';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import PieChartIcon from '@mui/icons-material/PieChart';
+
+// Components
+import NavMenu from './NavMenu';
 
 const AppSidebar = ({ drawerWidth, mobileOpen, handleDrawerToggle }) => {
-  const location = useLocation();
+  const theme = useTheme();
+  
   const navItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
-    { text: 'Products', icon: <InventoryIcon />, path: '/products' },
-    { text: 'Inventory', icon: <StoreIcon />, path: '/inventory' },
-    { text: 'Orders', icon: <ShoppingCartIcon />, path: '/orders' },
-    { text: 'Customers', icon: <PeopleIcon />, path: '/customers' },
-    { text: 'Reports', icon: <AssessmentIcon />, path: '/reports' },
-    // Example of a divider and another section
-    // { divider: true },
-    // { text: 'Management', subheader: true },
+    { 
+      text: 'Products', 
+      icon: <InventoryIcon />, 
+      children: [
+        { text: 'All Products', path: '/products' },
+        { text: 'Categories', path: '/products/categories', icon: <CategoryIcon /> },
+        { text: 'Offers', path: '/products/offers', icon: <LocalOfferIcon /> },
+      ]
+    },
+    { 
+      text: 'Orders', 
+      icon: <ShoppingCartIcon />, 
+      children: [
+        { text: 'All Orders', path: '/orders' },
+        { text: 'Pending Orders', path: '/orders/pending' },
+        { text: 'Completed Orders', path: '/orders/completed' },
+        { text: 'Invoices', path: '/invoices', icon: <ReceiptIcon /> },
+      ]
+    },
+    { 
+      text: 'Customers', 
+      icon: <PeopleIcon />, 
+      children: [
+        { text: 'All Customers', path: '/customers' },
+        { text: 'Add New', path: '/customers/new', icon: <PersonAddIcon /> },
+      ]
+    },
+    { 
+      text: 'Reports', 
+      icon: <AssessmentIcon />, 
+      children: [
+        { text: 'Sales', path: '/reports/sales', icon: <BarChartIcon /> },
+        { text: 'Inventory', path: '/reports/inventory', icon: <PieChartIcon /> },
+      ]
+    },
     { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
   ];
 
   const drawerContent = (
     <>
-      <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', px: [1] }}>
-        <StoreIcon sx={{ mr: 1, fontSize: '2rem', color: 'primary.main' }} />
+      <Toolbar sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        px: [1],
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+      }}>
+        <StoreIcon sx={{ mr: 1, fontSize: '2rem' }} />
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
           Supermarket MS
         </Typography>
       </Toolbar>
       <Divider />
       <Box sx={{ overflow: 'auto' }}>
-        <List>
-          {navItems.map((item, index) => {
-            if (item.divider) {
-              return <Divider key={`divider-${index}`} sx={{ my: 1 }} />;
-            }
-            if (item.subheader) {
-              return (
-                <ListItem key={item.text} sx={{ pt: 2, pb: 0 }}>
-                  <ListItemText
-                    primary={<Typography variant="caption" color="text.secondary">{item.text}</Typography>}
-                  />
-                </ListItem>
-              );
-            }
-            return (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton
-                  component={RouterLink}
-                  to={item.path}
-                  selected={location.pathname.startsWith(item.path)}
-                  sx={{
-                    '&.Mui-selected': {
-                      backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.08),
-                      '&:hover': {
-                        backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
-                      },
-                      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-                        color: 'primary.main',
-                        fontWeight: 500,
-                      },
-                    },
-                    // Add general hover effect for non-selected items
-                    '&:hover': {
-                        backgroundColor: (theme) => alpha(theme.palette.action.hover, 0.04),
-                    }
-                  }}
-                >
-                  <ListItemIcon sx={{minWidth: '40px'}}>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
+        <NavMenu navItems={navItems} />
       </Box>
     </>
   );
