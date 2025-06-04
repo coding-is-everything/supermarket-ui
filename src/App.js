@@ -9,8 +9,8 @@ import { alpha } from '@mui/material/styles'; // Import alpha for theme usage
 
 // Placeholder Page Components (you'll create these in separate files)
 // e.g., import DashboardPage from './pages/DashboardPage';
+import ProductsPage from './pages/ProductPage'; // Import the actual ProductsPage
 const DashboardPage = () => <Typography variant="h4" component="h1" gutterBottom>Dashboard Content</Typography>;
-const ProductsPage = () => <Typography variant="h4" component="h1" gutterBottom>Products Content</Typography>;
 const InventoryPage = () => <Typography variant="h4" component="h1" gutterBottom>Inventory Content</Typography>;
 const OrdersPage = () => <Typography variant="h4" component="h1" gutterBottom>Orders Content</Typography>;
 const CustomersPage = () => <Typography variant="h4" component="h1" gutterBottom>Customers Content</Typography>;
