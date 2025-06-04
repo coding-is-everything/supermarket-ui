@@ -6,6 +6,7 @@ import { Box, Toolbar, CssBaseline } from '@mui/material';
 import AppHeader from './AppHeader'; // Assuming AppHeader is in the same directory
 import AppSidebar from './AppSidebar'; // Assuming AppSidebar is in the same directory
 import MainContentArea from './MainContentArea';
+import Footer from './Footer'; // Import the Footer component
 
 const drawerWidth = 240; // Ensure this matches the width used in AppSidebar and AppHeader
 
@@ -65,21 +66,8 @@ const AppShell = () => {
           <MainContentArea><Outlet /></MainContentArea>
         </Box>
 
-        {/* Optional Footer - ensure it also considers drawerWidth if fixed */}
-        {/*
-        <Box component="footer" sx={{
-          p: 2,
-          mt: 'auto',
-          backgroundColor: 'background.paper',
-          textAlign: 'center',
-          width: `calc(100% - ${drawerWidth}px)`, // If sidebar is permanent
-          ml: `${drawerWidth}px` // If sidebar is permanent
-        }}>
-          <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Supermarket Management System
-          </Typography>
-        </Box>
-        */}
+        {/* Footer Component */}
+        <Footer drawerWidth={drawerWidth} />
       </Box>
     </Box>
   );
