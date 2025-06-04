@@ -1,71 +1,58 @@
-import React, { useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { List, ListItemText, Collapse, Box, Typography, alpha, ListItemButton } from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { List, ListItemText, Box, Typography } from '@mui/material';
 import NavItem from '../common/NavItem';
+import SubNavMenu from '../common/SubNavMenu';
 
 const NavMenuItem = ({ item, level = 0 }) => {
     const location = useLocation();
-    const [open, setOpen] = useState(false);
-
     const hasChildren = item.children && item.children.length > 0;
+    const isActive = (path) => path && location.pathname.startsWith(path);
+    
+    // Check if any child is active
+    const isAnyChildActive = hasChildren && 
+        item.children.some(child => isActive(child.path));
+    
+    // Determine if the item should be initially open
+    const initiallyOpen = isAnyChildActive;
 
-    const isActive = (path) => location.pathname.startsWith(path);
-    const isCurrentOrChildActive = item.path ? isActive(item.path) : false || (hasChildren && item.children.some(child => child.path && isActive(child.path)));
-
-    React.useEffect(() => {
-        if (hasChildren && item.children.some(child => child.path && isActive(child.path))) {
-            setOpen(true);
-        }
-    }, [location.pathname, hasChildren, item.children, isActive]);
-
-    const handleClick = () => {
-        if (hasChildren) {
-            setOpen(!open);
-        }
-
-        if (item.onClick) {
-            item.onClick();
-        }
-    };
-
-    return (
-        <>
-            <NavItem
-                text={item.text}
-                icon={item.icon}
-                path={!hasChildren ? item.path : undefined}
-                onClick={handleClick}
-                selected={item.path ? isActive(item.path) : isCurrentOrChildActive && hasChildren}
+    if (hasChildren) {
+        return (
+            <SubNavMenu
+                parentItem={{
+                    text: item.text,
+                    icon: item.icon,
+                    path: item.path,
+                    onClick: item.onClick
+                }}
+                childrenItems={item.children}
+                level={level}
+                initiallyOpen={initiallyOpen}
                 sx={{
                     pl: 2 + (level * 2),
                     py: 1.25,
-                    '&:hover': {
-                        backgroundColor: (theme) => alpha(theme.palette.action.hover, 0.04),
-                    },
-                    ...(hasChildren && {
-                        '&:hover': {
-                            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.04),
-                        },
-                    }),
                 }}
-                listItemTextProps={{
-                    variant: 'body2',
-                    fontWeight: item.path && isActive(item.path) ? 500 : 400,
-                }}
-                endIcon={hasChildren ? (open ? <ExpandLess /> : <ExpandMore />) : null}
             />
-            {hasChildren && (
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        {item.children.map((childItem, index) => (
-                            <NavMenuItem key={`${childItem.text}-${index}`} item={childItem} level={level + 1} />
-                        ))}
-                    </List>
-                </Collapse>
-            )}
-        </>
+        );
+    }
+
+
+    return (
+        <NavItem
+            text={item.text}
+            icon={item.icon}
+            path={item.path}
+            onClick={item.onClick}
+            selected={isActive(item.path)}
+            sx={{
+                pl: 2 + (level * 2),
+                py: 1.25,
+            }}
+            listItemTextProps={{
+                variant: 'body2',
+                fontWeight: isActive(item.path) ? 500 : 400,
+            }}
+        />
     );
 };
 
