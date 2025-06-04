@@ -10,7 +10,8 @@ import { alpha } from '@mui/material/styles'; // Import alpha for theme usage
 // Placeholder Page Components (you'll create these in separate files)
 // e.g., import DashboardPage from './pages/DashboardPage';
 import ProductsPage from './pages/ProductPage'; // Import the actual ProductsPage
-const DashboardPage = () => <Typography variant="h4" component="h1" gutterBottom>Dashboard Content</Typography>;
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+// const DashboardPage = () => <Typography variant="h4" component="h1" gutterBottom>Dashboard Content</Typography>;
 const InventoryPage = () => <Typography variant="h4" component="h1" gutterBottom>Inventory Content</Typography>;
 const OrdersPage = () => <Typography variant="h4" component="h1" gutterBottom>Orders Content</Typography>;
 const CustomersPage = () => <Typography variant="h4" component="h1" gutterBottom>Customers Content</Typography>;
@@ -157,8 +158,8 @@ function App() {
             }
           >
             {/* Default child route for "/" can be dashboard */}
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<DashboardPage />} />
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="inventory" element={<InventoryPage />} />
             <Route path="orders" element={<OrdersPage />} />
