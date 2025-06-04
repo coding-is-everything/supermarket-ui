@@ -28,7 +28,7 @@ import StoreIcon from '@mui/icons-material/Store';
 const AppSidebar = ({ drawerWidth, mobileOpen, handleDrawerToggle }) => {
   const location = useLocation();
   const navItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
     { text: 'Products', icon: <InventoryIcon />, path: '/products' },
     { text: 'Inventory', icon: <StoreIcon />, path: '/inventory' },
     { text: 'Orders', icon: <ShoppingCartIcon />, path: '/orders' },
