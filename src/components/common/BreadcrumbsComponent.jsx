@@ -1,7 +1,7 @@
 import React from 'react';
-import { Breadcrumbs as MuiBreadcrumbs, Link as MuiLink, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Breadcrumbs as MuiBreadcrumbs, Typography } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import BreadcrumbItem from './BreadcrumbItem';
 
 const BreadcrumbsComponent = ({ items, sx }) => {
     if (!items || items.length === 0) {
@@ -20,33 +20,15 @@ const BreadcrumbsComponent = ({ items, sx }) => {
         >
             {items.map((item, index) => {
                 const isLastItem = index === items.length - 1;
-
-                if (item.to && !isLastItem) {
-                    return (
-                        <MuiLink
-                        component={RouterLink}
-                        to={item.to}
-                        underline="hover"
-                        color="inherit"
+                return (
+                    <BreadcrumbItem
                         key={`breadcrumb-${item.label}-${index}`}
-                        sx={{ display: 'flex', alignItems: 'center' }}
-                        >
-                            {item.icon && React.cloneElement(item.icon, { sx: { mr: 0.5, fontSize: '1rem' } })}
-                            {item.label}
-                        </MuiLink>
-                    );
-                } else {
-                    return (
-                        <Typography
-                        color={isLastItem ? "text.primary" : "text.secondary"}
-                        key={`breadcrumb-${item.label}-${index}`}
-                        sx={{ display: 'flex', alignItems: 'center', fontWeight: isLastItem ? 500 : 'inherit' }}
-                        >
-                            {item.icon && React.cloneElement(item.icon, { sx: { mr: 0.5, fontSize: '1rem' } })}
-                            {item.label}
-                        </Typography>
-                    );
-                }
+                        label={item.label}
+                        to={!isLastItem ? item.to : undefined}
+                        icon={item.icon}
+                        isLastItem={isLastItem}
+                    />
+                );
             })}
         </MuiBreadcrumbs>
     );
