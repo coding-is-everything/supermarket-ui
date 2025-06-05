@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Tabs as MuiTabs, Tab, Box, AppBar, Paper, Typography } from '@mui/material';
+import { Tabs as MuiTabs, Box, AppBar, Paper, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import TabPanel from './TabPanel';
+import TabButton from './TabButton';
 
 function a11yProps(index) {
     return {
@@ -55,7 +56,7 @@ const TabsComponent = ({
                     aria-label="dynamic tabs example"
                 >
                     {tabs.map((tab, index) => (
-                        <Tab
+                        <TabButton
                             key={index}
                             label={tab.label}
                             icon={tab.icon}
