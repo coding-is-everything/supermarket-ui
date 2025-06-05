@@ -2,8 +2,15 @@ import React from 'react';
 import { Box, Paper, Typography, Grid, Button, TextField, MenuItem } from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import BreadcrumbsComponent from '../common/BreadcrumbsComponent';
 
-const DashboardLayoutComponent = ({ title, headerControls, children, sx }) => {
+const DashboardLayoutComponent = ({ 
+    title, 
+    headerControls, 
+    children, 
+    breadcrumbs,
+    sx 
+}) => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', ...sx }}>
             {(title || headerControls) && (
@@ -17,10 +24,22 @@ const DashboardLayoutComponent = ({ title, headerControls, children, sx }) => {
                         border: (theme) => `1px solid ${theme.palette.divider}`,
                     }}
                 >
+                    {/* Breadcrumbs */}
+                    {breadcrumbs && (
+                        <Box sx={{ mb: 1 }}>
+                            <BreadcrumbsComponent items={breadcrumbs} />
+                        </Box>
+                    )}
+                    
                     <Grid container spacing={2} alignItems="center" justifyContent="space-between">
                         {title && (
                             <Grid item xs={12} md="auto">
-                                <Typography variant='h5' component="h1" gutterBottom={!headerControls}>
+                                <Typography 
+                                    variant='h5' 
+                                    component="h1" 
+                                    gutterBottom={!headerControls}
+                                    sx={breadcrumbs ? { mt: 0.5 } : {}}
+                                >
                                     {title}
                                 </Typography>
                             </Grid>
